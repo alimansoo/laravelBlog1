@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\ArticleController;
+use App\Http\Controllers\admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,24 +19,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class,'home'])->name('home');
+Route::get('/article/{article:slug}', [HomeController::class,'article'])->name('article');
+Route::get('/category/{category:slug}', [HomeController::class,'category'])->name('category');
 
 Route::prefix('admin')->group(function (){
-    Route::get('/',function (){
-        return 'You are in admin Dashboard';
-    })->name('admin.dashbord');
+    Route::get('/',[AdminController::class,'index'])->name('admin.dashbord');
 
-    Route::get('/users',function (){
-        return 'You are in admin list users';
-    })->name('admin.users');
+    Route::resource('users',UserController::class,
+        [
+            'except' => ['show','destroy']
+        ]
+    );
+    Route::put('users/{user}/active',[UserController::class,'active']);
 
-    Route::get('/products',function (){
-        return view('d');
-    })->name('admin.products');
-
-    Route::get('/categories',function (){
-        return 'You are in admin list categories';
-    })->name('admin.categories');
+    Route::resource('articles',ArticleController::class,
+        [
+            'except' => ['show']
+        ]
+    );
+    Route::resource('categories',CategoryController::class,
+        [
+            'except' => ['show']
+        ]
+    );
 });
