@@ -85,7 +85,6 @@ class ArticleController extends Controller
         Article::create(
             [
                 'title'=>\request('title'),
-                'slug'=>$faker->slug(1),
                 'category'=>2,
                 'body'=>$request->body,
                 'writerId'=>3,
