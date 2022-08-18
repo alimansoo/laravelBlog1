@@ -16,9 +16,7 @@ class CategoryFactory extends Factory
     {
         return [
             'slug'=>$this->faker->slug(1),
-            'name_fa'=>PersianFaker::get('City'),
-            'created_at'=>now(),
-            'updated_at'=>now()
+            'name_fa'=> PersianFaker::get('City')
         ];
     }
 }

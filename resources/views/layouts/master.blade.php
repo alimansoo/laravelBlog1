@@ -20,11 +20,11 @@
 </div>
 
 <!-- Scripts -->
-<script src="http://127.0.0.1:8000/assets/js/jquery.min.js"></script>
-<script src="http://127.0.0.1:8000/assets/js/browser.min.js"></script>
-<script src="http://127.0.0.1:8000/assets/js/breakpoints.min.js"></script>
-<script src="http://127.0.0.1:8000/assets/js/util.js"></script>
-<script src="http://127.0.0.1:8000/assets/js/main.js"></script>
+<script src="http://localhost/assets/js/jquery.min.js"></script>
+<script src="http://localhost/assets/js/browser.min.js"></script>
+<script src="http://localhost/assets/js/breakpoints.min.js"></script>
+<script src="http://localhost/assets/js/util.js"></script>
+<script src="http://localhost/assets/js/main.js"></script>
 
 </body>
 </html>

@@ -18,11 +18,11 @@ class ArticleFactory extends Factory
         return [
             'title'=>PersianFaker::get('Lorem',['words'=>10]),
             'slug'=>$this->faker->slug(2),
-            'category'=>rand(1,5),
+            'category_id'=>rand(1,3),
             'body'=>PersianFaker::get('Lorem',['words'=>100]),
-            'writerId'=>rand(1,3),
             'created_at'=>now(),
-            'updated_at'=>now()
+            'updated_at'=>now(),
+            'view'=>0
         ];
     }
 }

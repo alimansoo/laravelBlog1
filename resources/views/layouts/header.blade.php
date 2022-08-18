@@ -1,8 +1,8 @@
 <header id="header">
-    <h1><a href="http://127.0.0.1:8000/">وبلاگ شخصی</a></h1>
+    <h1><a href="/">وبلاگ شخصی</a></h1>
     <nav class="links">
         <ul>
-            @foreach($categories as $category)
+            @foreach(\App\Models\Category::all() as $category)
                 <li><a href="/category/{{ $category->slug }}">{{ $category->name_fa }}</a></li>
             @endforeach
         </ul>

@@ -14,26 +14,26 @@
                             <div class="d-flex">
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> شناسه </label>
-                                    <input type="text" name="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="شناسه">
+                                    <input type="text" name="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="شناسه" value="@if(\request('id')) {{ \request('id') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> اسم </label>
-                                    <input type="text" name="fname" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="اسم">
+                                    <input type="text" name="firstname" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="اسم" value="@if(\request('firstname')) {{ \request('firstname') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> فامیل </label>
-                                    <input type="text" name="lname" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="فامیل">
+                                    <input type="text" name="lastname" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="فامیل" value="@if(\request('lastname')) {{ \request('lastname') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> ایمیل </label>
-                                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ایمیل">
+                                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ایمیل" value="@if(\request('email')) {{ \request('email') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1">نقش کاربر</label>
                                     <select class="form-select" name="role" aria-label="Default select example">
                                         <option value="">انتخاب کنید</option>
-                                        @foreach($rols as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @foreach(\App\Models\Role::all() as $role)
+                                            <option @if(\request('role')==$role->id) selected @endif value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -69,7 +69,7 @@
                                             </div>
                                         </td>
                                         <td class="align-middle text-center text-sm">
-                                            <p class="text-xs font-weight-bold mb-0">{{ $user->RoleName }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $user->role->name }}</p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             <form action="users/{{ $user->id }}/active" method="post">
@@ -83,7 +83,7 @@
                                             </form>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">{{ $user->jalaliCreatedAt }}</span>
+                                            <span class="text-secondary text-xs font-weight-bold">{{ $user->jalali_date() }}</span>
                                         </td>
                                         <td class="align-middle">
                                             <a href="/admin/users/{{ $user->id }}/edit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Edit user">

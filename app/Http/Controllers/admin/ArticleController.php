@@ -4,14 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\Category;
-use App\Models\Role;
 use App\Models\User;
-use Faker\Generator as Faker;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Morilog\Jalali\Jalalian;
-use Dotenv\Validator;
 
 class ArticleController extends Controller
 {
@@ -22,27 +16,29 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $article = Article::orderBy('id', 'desc');
-        $articles = $article->paginate(10)->withQueryString();
-        foreach ($articles as $key=>$article){
-            $writerId = $article->writerId;
-            $writer = User::findOrFail($writerId);
-            $article->title = Str::limit($article->title,40, $end='...');
-            $article['jalaliCreatedAt'] = Jalalian::forge($article->created_at)->format('%B %d، %Y');
-            $article['writerFullName'] = $writer->fname.' '.$writer->lname;
-            $article['CategtoryName'] = Category::findOrFail(
-                $article->category
-            )->name_fa;
-            $articles[$key] = $article;
+        $where = [];
+        if (\request('id')){
+            $where[] = ['id','=',\request('id')];
         }
-        $categories = Category::where([
-            'is_delete'=>false
-        ])->get();
+        if (\request('title')){
+            $where[] = ['title','Like','%'.\request('title').'%'];
+        }
+        if (\request('writer')){
+            $where[] = ['user_id','Like','%'.\request('writer').'%'];
+        }
+        if (\request('category')){
+            $where[] = ['category_id','=',\request('category')];
+        }
+
+        if (count($where) > 0)
+            $articles = Article::where($where)->orderBy('id', 'desc')->paginate(10)->withQueryString();
+        else
+            $articles = Article::orderBy('id', 'desc')->paginate(10)->withQueryString();
+
         return view(
             'admin.articles',
             [
                 'articles'=>$articles,
-                'categories'=>$categories,
                 'sidebar'=>'articles'
             ]
         );
@@ -55,13 +51,9 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::where([
-            'is_delete'=>false
-        ])->get();
         return view(
             'admin/createArticle',
             [
-                'categories'=>$categories,
                 'sidebar'=>'articles'
             ]
         );
@@ -73,7 +65,7 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,Faker $faker)
+    public function store(Request $request)
     {
         $request->validate(
             [
@@ -82,16 +74,18 @@ class ArticleController extends Controller
                 'body'=>'required'
             ]
         );
-        Article::create(
+        dd($request->tags);
+        $article = auth()->user()->articles()->create(
             [
-                'title'=>\request('title'),
-                'category'=>2,
+                'title'=>$request->title,
+                'category_id'=>$request->category,
                 'body'=>$request->body,
-                'writerId'=>3,
                 'created_at'=>now(),
                 'updated_at'=>now(),
-            ]
-        );
+                'view'=>0
+            ]);
+        $article->tags()->attach($request->tags);
+
         return redirect('admin/articles');
     }
 
@@ -103,14 +97,10 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $categories = Category::where([
-            'is_delete'=>false
-        ])->get();
         return view(
             'admin.updateArticle',
             [
                 'article'=>$article,
-                'categories'=>$categories,
                 'sidebar'=>'articles'
             ]
         );

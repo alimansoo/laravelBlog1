@@ -37,8 +37,8 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">دسته بندی</label>
                                     <select class="form-select" name="category" aria-label="Default select example">
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}"@if($category->id === $article->category) selected @endif>{{ $category->name_fa }}</option>
+                                        @foreach(\App\Models\Category::all() as $category)
+                                            <option value="{{ $category->id }}"@if($category->id === $article->category_id) selected @endif>{{ $category->name_fa }}</option>
                                         @endforeach
                                     </select>
                                 </div>

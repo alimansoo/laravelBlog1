@@ -3648,3 +3648,24 @@ input, select, textarea {
 .actions.pagination{
     justify-content: center;
 }
+.list-group{
+    list-style: none;
+    display: inline-flex;
+    margin: 0;
+}
+.rtl{
+    direction: rtl;
+}
+.list-group-item{
+    background-color: #3acaeb;
+    color: white;
+    border-radius: 8px;
+    margin: 4px;
+    padding: 4px;
+}
+.list-group-item a:hover{
+    color: gray;
+}
+.list-group-item:hover{
+    color: gray;
+}

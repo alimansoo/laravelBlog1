@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use PersianFaker\PersianFaker;
 
@@ -19,10 +20,7 @@ class UserFactory extends Factory
             'fname' => PersianFaker::get('MaleName'),
             'lname' => PersianFaker::get('LastName'),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => Str::random(8), // password
-            'role' => rand(1,3), // password
-            'remember_token' => Str::random(10),
+            'password' => Hash::make('password'),
             'created_at'=>now(),
             'updated_at'=>now(),
         ];

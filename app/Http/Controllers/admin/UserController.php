@@ -15,22 +15,33 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('id', 'desc');
-        $users = $users->paginate(10)->withQueryString();
-        foreach ($users as $key=>$user){
-            $role =Role::findOrFail($user->role);
-            $user['RoleName'] = $role->name;
-            $user['jalaliCreatedAt'] = Jalalian::forge($user->created_at)->format('%B %d، %Y');
-            $users[$key] = $user;
+        $where = [];
+        if (\request('id')){
+            $where[] = ['id','=',\request('id')];
         }
-        $roles = Role::all();
+        if (\request('firstname')){
+            $where[] = ['fname','Like','%'.\request('firstname').'%'];
+        }
+        if (\request('lastname')){
+            $where[] = ['lname','Like','%'.\request('lastname').'%'];
+        }
+        if (\request('email')){
+            $where[] = ['email','=',\request('email')];
+        }
+        if (\request('role')){
+            $where[] = ['role_id','=',\request('role')];
+        }
+
+        if (count($where) > 0)
+            $users = User::where($where)->orderBy('id', 'desc')->paginate(10)->withQueryString();
+        else
+            $users = User::orderBy('id', 'desc')->paginate(10)->withQueryString();
         return view(
             'admin.users',
             [
                 'users'=>$users,
-                'rols'=>$roles,
                 'sidebar'=>'users'
             ]
         );
@@ -43,11 +54,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        $rols = Role::all();
         return view(
             'admin.createuser',
             [
-                'rols'=>$rols,
                 'sidebar'=>'users'
             ]
         );
@@ -90,12 +99,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $rols = Role::all();
         return view(
             'admin/updateUser',
             [
                 'user'=>$user,
-                'rols'=>$rols,
                 'sidebar'=>'users'
             ]
         );

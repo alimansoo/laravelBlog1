@@ -44,7 +44,7 @@
                                     <label for="exampleInputEmail1">نقش کاربر</label>
                                     <select class="form-select" name="role" aria-label="Default select example">
                                         <option value=" " selected>انتخاب کنید</option>
-                                        @foreach($rols as $role)
+                                        @foreach(\App\Models\Role::all() as $role)
                                             <option value="1">{{ $role->name }}</option>
                                         @endforeach
                                     </select>

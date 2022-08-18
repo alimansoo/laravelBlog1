@@ -18,20 +18,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::where(
-            [
-                'is_delete'=>false
-            ]
-        )->paginate(10);
-        foreach ($categories as $key=>$category){
-            $category['ArticleCount'] = Article::where(
-                [
-                    'category'=>$category->id
-                ]
-            )->get()
-                ->count();
-            $categories[$key] = $category;
+        $where = [];
+        if (\request('id')){
+            $where[] = ['id','=',\request('id')];
         }
+        if (\request('name')){
+            $where[] = ['name_fa','Like','%'.\request('name').'%'];
+        }
+        if (\request('slug')){
+            $where[] = ['slug','Like','%'.\request('slug').'%'];
+        }
+
+        if (count($where) > 0)
+            $categories = Category::where($where)->orderBy('id', 'desc')->paginate(10)->withQueryString();
+        else
+            $categories = Category::orderBy('id', 'desc')->paginate(10)->withQueryString();
+
         return view(
             'admin.categories',
             [
@@ -62,22 +64,11 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,Faker $faker)
+    public function store(Request $request)
     {
-
-        while (true){
-            $faker = $faker->slug(1);
-            $count = Article::where([
-                'slug'=>$faker
-            ])->get()->count();
-            if ($count == 0)
-                break;
-        }
-
         Category::create(
             [
                 'name_fa'=>$request->name_fa,
-                'slug'=>$faker
             ]
         );
         return redirect('admin/categories');
@@ -126,11 +117,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->update(
-            [
-                'is_delete'=>true
-            ]
-        );
+        $category->delete();
         return back();
     }
 }

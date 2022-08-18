@@ -30,14 +30,23 @@
                                     <label for="exampleInputEmail1">دسته بندی</label>
                                     <select class="form-select" name="category" aria-label="Default select example">
                                         <option value=" " selected>انتخاب کنید</option>
-                                        @foreach($categories as $category)
+                                        @foreach(\App\Models\Category::all() as $category)
                                             <option value="{{ $category->id }}">{{ $category->name_fa }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label for="exampleInputEmail1"> نشانه ها</label>
+                                    <select class="form-select" name="tags[]" aria-label="Default select example" multiple>
+                                        <option value=" " selected>انتخاب کنید</option>
+                                        @foreach(\App\Models\Tag::all() as $tag)
+                                            <option value="{{ $tag->id }}">{{ $tag->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleInputEmail1">متن مقاله</label>
-                                    <textarea class="form-control"  name="body" id="exampleFormControlTextarea1" rows="10"  placeholder="متن مقاله"></textarea>
+                                    <textarea class="form-control" id="editor"  name="body" id="exampleFormControlTextarea1" rows="10"  placeholder="متن مقاله"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary mb-0">ایجاد مقاله</button>
                             </form>

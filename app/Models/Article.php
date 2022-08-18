@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\Str;
+use Morilog\Jalali\Jalalian;
 
 class Article extends Model
 {
@@ -13,9 +15,10 @@ class Article extends Model
     protected $fillable = [
         'title',
         'slug',
-        'category',
+        'category_id',
         'body',
-        'writerId',
+        'user_id',
+        'view'
     ];
     public function getRouteKeyName()
     {
@@ -29,5 +32,28 @@ class Article extends Model
                 'source' => 'title'
             ]
         ];
+    }
+    public function user_fullname(){
+        return $this->user->fname.' '.$this->user->lname;
+    }
+    public function body_limited(){
+        return Str::limit($this->body,150, $end='...');
+    }
+    public function title_limited(){
+        return Str::limit($this->title,50, $end='...');
+    }
+    public function jalali_date(){
+        return Jalalian::forge($this->created_at)->format('%B %d، %Y');
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }

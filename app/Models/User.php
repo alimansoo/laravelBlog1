@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Morilog\Jalali\Jalalian;
 
 class User extends Authenticatable
 {
@@ -21,9 +22,8 @@ class User extends Authenticatable
         'fname',
         'lname',
         'email',
-        'role',
+        'role_id',
         'password',
-        'is_active',
     ];
 
     /**
@@ -44,4 +44,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function jalali_date(){
+        return Jalalian::forge($this->created_at)->format('%B %d، %Y');
+    }
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
+    public function articles(){
+        return $this->hasMany(Article::class);
+    }
+    public function full_name(){
+        return $this->fname.' '.$this->lname;
+    }
 }

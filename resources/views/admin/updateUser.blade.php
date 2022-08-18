@@ -38,8 +38,8 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">نقش کاربر</label>
                                     <select class="form-select" name="role" aria-label="Default select example">
-                                        @foreach($rols as $role)
-                                            <option value="{{ $role->id }}"@if($role->id === $user->role) selected @endif>{{ $role->name }}</option>
+                                        @foreach(\App\Models\Role::all() as $role)
+                                            <option value="{{ $role->id }}"@if($role->id === $user->role_id) selected @endif>{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

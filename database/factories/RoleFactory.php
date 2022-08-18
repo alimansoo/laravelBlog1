@@ -15,9 +15,7 @@ class RoleFactory extends Factory
     {
         return [
             'name'=>'نویسنده',
-            'permision'=>3,
-            'created_at'=>now(),
-            'updated_at'=>now()
+            'permision'=>3
         ];
     }
 }

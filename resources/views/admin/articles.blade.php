@@ -14,22 +14,27 @@
                             <div class="d-flex">
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> شناسه </label>
-                                    <input type="text" name="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="شناسه">
+                                    <input type="text" name="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="شناسه" value="@if(\request('id')) {{ \request('id') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> عنوان </label>
-                                    <input type="text" name="title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="عنوان">
+                                    <input type="text" name="title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="عنوان" value="@if(\request('title')) {{ \request('title') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
-                                    <label for="exampleInputEmail1"> نویسنده </label>
-                                    <input type="text" name="writer" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="نویسنده">
+                                    <label for="exampleInputEmail1">نویسنده</label>
+                                    <select class="form-select" name="writer" aria-label="Default select example">
+                                        <option value="">انتخاب کنید</option>
+                                        @foreach(\App\Models\User::all() as $user)
+                                            <option @if(\request('writer') == $user->id) selected @endif value="{{ $user->id }}">{{ $user->full_name() }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> دسته بندی</label>
                                     <select class="form-select" name="category" aria-label="Default select example">
                                         <option value="">انتخاب کنید</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name_fa }}</option>
+                                        @foreach(\App\Models\Category::all() as $category)
+                                            <option @if(\request('category') == $category->id) selected @endif value="{{ $category->id }}">{{ $category->name_fa }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -65,16 +70,16 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="/article/{{ $article->slug }}" target="_blank">{{ $article->title }}</a>
+                                            <a href="/article/{{ $article->slug }}" target="_blank">{{ $article->title_limited() }}</a>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $article->CategtoryName }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $article->category->name_fa }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $article->writerFullName }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $article->user_fullname() }}</p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">{{ $article->jalaliCreatedAt }}</span>
+                                            <span class="text-secondary text-xs font-weight-bold">{{ $article->jalali_date() }}</span>
                                         </td>
                                         <td class="align-middle">
                                             <a href="/admin/articles/{{ $article->slug }}/edit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Edit user">

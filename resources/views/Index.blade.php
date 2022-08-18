@@ -10,15 +10,15 @@
                 <header>
                     <div class="title">
                         <h2><a href="/article/{{ $article->slug }}">{{ $article->title }}</a></h2>
-                        <p>{{ $article->CategtoryName }}</p>
+                        <p>{{ $article->category->name_fa }}</p>
                     </div>
                     <div class="meta">
-                        <time class="published" datetime="2015-11-01">{{ $article->jalaliCreatedAt }}</time>
-                        <a href="#" class="author"><span class="name">{{ $article->writerFullName }}</span><img src="images/avatar.jpg" alt="" /></a>
+                        <time class="published" datetime="2015-11-01">{{ $article->jalali_date() }}</time>
+                        <a href="/writer/{{ $article->user->id }}" class="author"><span class="name">{{ $article->user_fullname() }}</span><img src="images/avatar.jpg" alt="" /></a>
                     </div>
                 </header>
                 <a href="/article/{{ $article->slug }}" class="image featured"><img src="/images/pic01.jpg" alt="" /></a>
-                <p>{{ $article->body }}</p>
+                <p>{{ $article->body_limited() }}</p>
                 <footer>
                     <ul class="actions">
                         <li><a href="/article/{{ $article->slug }}" class="button large">ادامه خواندن</a></li>

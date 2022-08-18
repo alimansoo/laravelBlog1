@@ -14,15 +14,15 @@
                             <div class="d-flex">
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> شناسه </label>
-                                    <input type="text" name="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="شناسه">
+                                    <input type="text" name="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="شناسه" value="@if(\request('id')) {{ \request('id') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> نام </label>
-                                    <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="نام">
+                                    <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="نام" value="@if(\request('name')) {{ \request('name') }} @endif">
                                 </div>
                                 <div class="form-group m-2">
                                     <label for="exampleInputEmail1"> ادرس </label>
-                                    <input type="text" name="slug" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ادرس">
+                                    <input type="text" name="slug" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ادرس" value="@if(\request('slug')) {{ \request('slug') }} @endif">
                                 </div>
                             </div>
                             <button class="btn btn-primary">فیلتر</button>
@@ -41,7 +41,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($categories as $categoriy)
+                                @foreach($categories as $category)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
@@ -49,30 +49,30 @@
                                                     <img src="http://127.0.0.1:8000/assets/img/category.jpg" class="avatar avatar-sm me-3" alt="user1">
                                                 </div>
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">{{ $categoriy->id }}</h6>
+                                                    <h6 class="mb-0 text-sm">{{ $category->id }}</h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
-                                                <a href="/category/{{ $categoriy->slug }}" target="_blank">{{ $categoriy->name_fa }}</a>
+                                                <a href="/category/{{ $category->slug }}" target="_blank">{{ $category->name_fa }}</a>
                                             </p>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
-                                                {{ $categoriy->slug }}
+                                                {{ $category->slug }}
                                             </p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">{{ $categoriy->ArticleCount }}</span>
+                                            <span class="text-secondary text-xs font-weight-bold">{{ $category->artilce_view() }}</span>
                                         </td>
                                         <td class="align-middle" style="text-align: end;">
-                                            <a href="/admin/categories/{{ $categoriy->id }}/edit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Edit user">
+                                            <a href="/admin/categories/{{ $category->id }}/edit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Edit user">
                                                 ویرایش
                                             </a>
                                         </td>
                                         <td class="align-middle" style="text-align: start;">
-                                            <form action="/admin/categories/{{ $categoriy->id }}" method="post">
+                                            <form action="/admin/categories/{{ $category->id }}" method="post">
                                                 @method('delete')
                                                 @csrf
                                                 <button class="btn btn-danger">حذف</button>
